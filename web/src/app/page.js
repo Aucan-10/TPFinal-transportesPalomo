@@ -31,7 +31,7 @@ export default async function Home() {
       {error && <p className="error">{error}</p>}
       {!error && camiones.length === 0 && <p>No hay camiones cargados.</p>}
 
-      <ul>
+      <ul className="listado">
         {camiones.map((c) => (
           <li key={c.id}>
             <Link href={`/camiones/${c.id}`}>

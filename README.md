@@ -84,30 +84,23 @@ Campos de un camión: `patente` (texto, único), `modelo` (texto), `tipo_servici
 
 > Nota: estas pruebas se hicieron con `curl`. Repetilas en Thunder Client antes de entregar, y reemplazá esta tabla si los códigos cambian.
 
-## Problemas conocidos
-
-- _Completar: qué no funciona o qué quedó pendiente, si hay algo._
-
-## Informe teórico
+## ===== Informe teórico =====
 
 _Respondé cada punto con tus palabras y refiriéndote a este proyecto. Entre 3 y 6 líneas por punto._
 
 1. **Códigos de estado:** mostrá un caso de tu API que devuelva 404 y uno que devuelva 422. ¿Por qué cada uno es el código correcto y no otro?
-
-   _Respuesta:_
+404 (Not Found): Mi API devuelve este código cuando se hace un GET /api/camion/999 y ese ID no existe en la base de datos (usando findOrFail). Es el correcto porque el servidor entiende la petición, pero el recurso solicitado no está. No es un 400, ya que la sintaxis de la URL es válida.
+422 (Unprocessable Entity): Se devuelve al hacer un POST o PUT cuando los datos no pasan la validación de $request->validate() (por ejemplo, enviar un campo numérico negativo o un texto vacío). Es el código correcto porque la sintaxis de la petición (JSON) es válida, pero los datos semánticamente no cumplen las reglas. No es un 500, ya que no es un error del servidor.
 
 2. **HTTPS:** si tu app se publicara en HTTP en lugar de HTTPS, ¿qué podría ver alguien en la misma red? Explicá también por qué el Service Worker exige HTTPS.
-
-   _Respuesta:_
+Si la app se publicara en HTTP, cualquier persona en la misma red (por ejemplo, en una Wi-Fi pública) podría interceptar el tráfico (ataque Man-in-the-Middle), leyendo datos enviados o modificando las respuestas de la API. El Service Worker exige HTTPS porque actúa como un proxy a nivel de navegador que intercepta todas las peticiones de red; sin cifrado, un atacante podría inyectar código malicioso en el Service Worker y comprometer la navegación del usuario de forma persistente y silenciosa.
 
 3. **CORS:** ¿por qué el `fetch` desde un Server Component no tiene problemas de CORS? ¿En qué caso de tu app podría aparecer?
-
-   _Respuesta:_
+El fetch desde un Server Component de Next.js no tiene problemas de CORS porque se ejecuta en el servidor (Node.js), y las políticas de CORS son una restricción de seguridad impuesta únicamente por los navegadores web, no por los servidores. En mi aplicación, un problema de CORS podría aparecer si un Client Component (con 'use client') intenta hacer un fetch directamente a la API de Laravel y ambos están corriendo en puertos o dominios distintos (ej. localhost:3000 llamando a localhost:8000), ya que ahí el navegador sí bloquea la petición.
 
 4. **PWA y TWA:** ¿tu app necesita estar en Google Play? Justificá tu respuesta.
-
-   _Respuesta:_
+No, mi app no necesita estar obligatoriamente en Google Play. Una PWA se puede instalar directamente desde el navegador (Chrome, Edge, Safari, etc.) gracias al archivo manifest.json y al Service Worker registrado, sin intermediarios. Solo sería necesario empaquetarla como TWA (Trusted Web Activity) y subirla a la tienda si se buscara mayor visibilidad, confianza del usuario o acceso a APIs nativas específicas, pero no es un requisito técnico para su funcionamiento.
 
 5. **Decisiones:** ¿qué fue lo que más te costó y cómo lo resolviste?
-
-   _Respuesta:_
+  Lo que más se me dificulto fue lograr que la aplicación funcione Offline. Muchos errores de compatibilidad de codigo surgieron en el momento del test.
+  Para solucionarlo, investigue sobre los errores y corregi el codigo, descargue la app y la probé.

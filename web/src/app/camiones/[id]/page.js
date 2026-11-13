@@ -38,7 +38,7 @@ export default async function DetalleCamion({ params }) {
       {camion && (
         <>
           <h1>{camion.modelo}</h1>
-          <ul>
+          <ul className="ficha">
             <li>Patente: {camion.patente}</li>
             <li>Servicio: {camion.tipo_servicio}</li>
             <li>Capacidad: {camion.capacidad_kg} kg</li>
